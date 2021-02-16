@@ -25,7 +25,14 @@ const dimensionsSchema = {
   }
 }
 
-module.exports = class InputManager {
+class InputManager {
+
+  /**
+   * @description Creates a prompt validaton schema based on number of rows and columns
+   * @param {Number} f rows
+   * @param {Number} c columns
+   * @returns validation schema for rows
+   */
   _generateSchema(f, c) {
     const rowSchemaProperties = {
       minLength: c,
@@ -44,6 +51,10 @@ module.exports = class InputManager {
     return rowSchema
   }
 
+  /**
+   * @description captures and parse the user input
+   * @returns {Promise<Object>} A parsed input object containing f, c, and content 
+   */
   async getInput() {
     prompt.start()
 
@@ -56,3 +67,5 @@ module.exports = class InputManager {
     return { f, c, content }
   }
 }
+
+module.exports = InputManager

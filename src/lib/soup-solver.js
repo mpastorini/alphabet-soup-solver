@@ -11,7 +11,7 @@ const nextPositionMethods = {
 
 class SoupSolver {
   constructor(wordToFind = 'OIE') {
-    this.wordToFind = wordToFind.toUpperCase()
+    this.wordToFind = wordToFind.toUpperCase() // Works with any word
   }
 
   /**
