@@ -1,0 +1,19 @@
+{
+  "name": "challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "challenge.js",
+  "scripts": {
+    "test": "mocha ./**/*.test.js --timeout 5000",
+    "start": "node ./src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^8.3.0"
+  },
+  "dependencies": {
+    "prompt": "^1.1.0",
+    "robotjs": "^0.6.0"
+  }
+}
