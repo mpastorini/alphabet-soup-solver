@@ -1,6 +1,4 @@
 # Soup solvere
-iix
-exe
 
 Soup solver that count the matches with the word 'OIE'
 
@@ -23,8 +21,8 @@ npm start
 
 Example
 ```
-prompt: Rows quantity (1-100):  (3)
-prompt: Columns quantity (1-100):  (3)
+prompt: Rows quantity (1-100):  (3) 3
+prompt: Columns quantity (1-100):  (3) 3
 prompt: row 1:  oie
 prompt: row 2:  oie
 prompt: row 3:  oie
