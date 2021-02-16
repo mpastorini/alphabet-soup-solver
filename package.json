@@ -1,8 +1,8 @@
 {
-  "name": "challenge",
+  "name": "alphabet-soup-solver",
   "version": "1.0.0",
   "description": "",
-  "main": "challenge.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "mocha ./**/*.test.js --timeout 5000",
     "start": "node ./src/index.js"
