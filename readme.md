@@ -1,4 +1,4 @@
-# Soup solvere
+# Soup solver
 
 Soup solver that count the matches with the word 'OIE'
 
