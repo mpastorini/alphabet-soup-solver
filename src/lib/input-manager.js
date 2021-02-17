@@ -1,31 +1,39 @@
-const prompt = require('prompt')
-const { promisify } = require('util')
-const getPrompt = promisify(prompt.get)
-
-const dimensionsSchema = {
-  properties: {
-    f: {
-      default: 3,
-      description: 'Rows quantity (1-100)',
-      maximum: 100,
-      message: 'f represents the number of rows, is required and should be integer between 1 and 100',
-      minimum: 1,
-      required: true,
-      type: 'integer'
-    },
-    c: {
-      default: 3,
-      description: 'Columns quantity (1-100)',
-      maximum: 100,
-      message: 'c represents the number of columns, is required and should be integer between 1 and 100',
-      minimum: 1,
-      required: true,
-      type: 'integer'
-    }
-  }
-}
+const prompts = require('prompts')
 
 class InputManager {
+  constructor() {
+    this._dimensionSchema = [
+      {
+        type: 'number',
+        name: 'f',
+        message: `f (Rows quantity between 1 and 100)`,
+        validate: this._validateDimension
+      },
+      {
+        type: 'number',
+        name: 'c',
+        message: `c (Columns quantity between 1 and 100)`,
+        validate: this._validateDimension
+      }
+    ]
+  }
+
+  /**
+   * @description Validates a row
+   * @param {String} row Row letters
+   * @param {number} c Number of columns
+   */
+  _validateRow(row, c) {
+    return row.match(/^[a-zA-Z]+$/) && row.length === c
+  }
+
+  /**
+   * @description Validates a dimension
+   * @param {number} dimension Number of columns
+   */
+  _validateDimension(dimension) {
+    return dimension >= 1 && dimension <= 100
+  }
 
   /**
    * @description Creates a prompt validaton schema based on number of rows and columns
@@ -34,18 +42,17 @@ class InputManager {
    * @returns validation schema for rows
    */
   _generateSchema(f, c) {
-    const rowSchemaProperties = {
-      minLength: c,
-      maxLength: c,
-      message: `Each row should contain exactly ${c} letters (Don't care about lower or upper case)`,
-      pattern: /^[a-zA-Z]+$/,
-      required: true,
-      type: 'string'
-    }
+    let rowSchema = []
 
-    const rowSchema = { properties: {} }
+    // Make a prompt of length c per row
     for (let i = 0; i < f; i++) {
-      rowSchema.properties[`row ${i + 1}`] = rowSchemaProperties
+      rowSchema.push({
+        type: 'text',
+        name: `row${i}`,
+        message: `Row ${i+1} (Row letters (Only ${c} letters))`,
+        validate: row => this._validateRow(row, c),
+        format: row => row.toUpperCase()
+      })
     }
 
     return rowSchema
@@ -56,12 +63,9 @@ class InputManager {
    * @returns {Promise<Object>} A parsed input object containing f, c, and content 
    */
   async getInput() {
-    prompt.start()
-
-    const { f, c } = await getPrompt(dimensionsSchema)
+    const { f, c } = await prompts(this._dimensionSchema)
     const currentSchema = this._generateSchema(f, c)
-
-    const rows = await getPrompt(currentSchema)
+    const rows = await prompts(currentSchema)
     const content = Object.keys(rows).map(key => rows[key].toUpperCase().split(''))
 
     return { f, c, content }
